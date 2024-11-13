@@ -91,8 +91,16 @@ impl YahooConnector {
     }
 
     /// Get list for options for a given name
-    pub async fn search_options(&self, name: &str) -> Result<YOptionChain, YahooError> {
-        let url = format!("https://query2.finance.yahoo.com/v6/finance/options/{name}");
+    pub async fn search_options(
+        &self,
+        name: &str,
+        expiration_date: Option<u64>,
+    ) -> Result<YOptionChain, YahooError> {
+        let mut url = format!("https://query2.finance.yahoo.com/v6/finance/options/{name}");
+
+        if let Some(expiration_date) = expiration_date {
+            url = format!("{url}?date={expiration_date}");
+        }
         let resp = self.client.get(url).send().await?;
         let resp = resp.json::<YOptionChain>().await?;
 
@@ -237,7 +245,7 @@ mod tests {
     #[test]
     fn search_options() {
         let provider = YahooConnector::new().unwrap();
-        let resp = tokio_test::block_on(provider.search_options("AAPL"));
+        let resp = tokio_test::block_on(provider.search_options("AAPL", None));
 
         assert!(resp.is_ok());
     }
