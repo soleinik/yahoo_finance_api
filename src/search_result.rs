@@ -1,4 +1,4 @@
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 use super::YahooError;
 
@@ -110,20 +110,20 @@ impl YSearchResult {
     }
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct YOptionChain {
     pub option_chain: YOptionChainResult,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct YOptionChainResult {
     pub result: Vec<YOptionChainData>,
     pub error: Option<String>,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct YOptionChainData {
     pub underlying_symbol: String,
@@ -134,7 +134,7 @@ pub struct YOptionChainData {
     pub options: Vec<YOptionDetails>,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct YQuote {
     pub language: String,
@@ -213,7 +213,7 @@ pub struct YQuote {
     pub symbol: String,
 }
 
-#[derive(Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct YOptionDetails {
     pub expiration_date: u64,
@@ -222,7 +222,7 @@ pub struct YOptionDetails {
     pub puts: Vec<YOptionContract>,
 }
 
-#[derive(Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct YOptionContract {
     pub contract_symbol: Option<String>,
